@@ -1,0 +1,89 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}
+{{ listing.title }}
+{% endblock %}
+
+{% block body %}
+<main class="container">
+<div class="row g-4">
+    <div class="col-12 col-lg-6 align-self-center d-flex justify-content-center">
+        <img class="listing-img" src="{{ listing.image_url }}" alt="...">
+    </div>
+    <div class="col-12 col-lg-6">
+        <h1 class="mb-4">{{ listing.title }}</h1>
+        <p class="fw-bold fs-2">${{ current_price}}</p>
+
+        {% if user.is_authenticated and listing.status == "active" %}
+        <small class="mb-1">
+            {{ bid_count }} bid(s) so far.
+            {% if user_has_highest_bid %}
+            Your bid is the current bid.
+            {% endif %}
+        </small>
+        <form action="{% url 'bid' %}" class="mb-3 d-flex align-items-end" method="post">
+            {% csrf_token %}
+            <div class="flex-grow-1">
+                {{ bid_form }}
+            </div>
+            <input type="submit" class="btn btn-primary btn-sm ms-2" value="Place Bid">
+        </form>
+        {% endif %}
+
+        <p>{{ listing.description }}</p>
+        <p><strong>Listed by:</strong> {{ listing.listed_by }}</p>
+        <p><strong>Listed at:</strong> {{ listing.date_created }}</p>
+
+        <div class="mb-4">
+            {% if listing.category %}
+            <p><strong>Category:</strong> {{ listing.category }}</p>
+            {% else %}
+            <p><strong>Category:</strong> No category listed</p>
+            {% endif %}
+        </div>
+
+        {% if user.is_authenticated and listing.status == "active" %}
+        <div class="d-flex">
+            {% if in_watchlist %}
+            <a class="btn btn-danger" href="{% url 'delete_watchlist_item' listing.id %}">
+                Remove from Watchlist
+            </a>
+            {% else %}
+            <form action="{% url 'watchlist' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="listing_id" value="{{ listing.id }}">
+                <input type="submit" class="btn btn-primary" value="Add to Watchlist">
+            </form>
+            {% endif %}
+            {% if user_created_the_listing %}
+            <a class="btn btn-danger ms-2" href="{% url 'close_auction' listing.id %}">
+                Close auction
+            </a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+<div class="mt-5">
+    <h2 class="fs-4">Comments</h2>
+    <form action="{% url 'comment' %}" method="post" class="mb-3">
+        {% csrf_token %}
+        {{ comment_form }}
+        <input type="submit" value="Comment" class="btn btn-primary btn-sm">
+    </form>
+    <div class="row gy-2">
+        {% for comment in comments %}
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title fs-6 fw-bold">{{ comment.author.username }}</h5>
+                    <p class="card-text mb-2">{{ comment.text }}</p>
+                    <small class="text-muted">{{ comment.date_created }}</small>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+</main>
+{% endblock %}

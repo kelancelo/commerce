@@ -1,0 +1,23 @@
+.card-listing-img {
+    max-height: 10rem !important;
+    object-fit: contain;
+}
+
+.listing-img {
+    max-height: 32rem;
+    width: 100%;
+    object-fit: contain;
+}
+
+.errorlist {
+    list-style: none;
+    padding: 0;
+}
+
+.errorlist>li {
+    color: white;
+    font-size: .8rem;
+    background-color: #dc3545;
+    border-radius: 4px;
+    padding: .5em;
+}
