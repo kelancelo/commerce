@@ -1,0 +1,54 @@
+<div class="row g-4">
+    {% for listing in listings %}
+    {% if listing.status == "active" %}
+        <div class="col-md-12 col-lg-6 d-flex justify-content-center">
+            <div class="card w-100">
+                <div class="row g-0 h-100">
+                    <div class="col-md-4 align-self-center d-flex justify-content-center">
+                        <img src="{{ listing.image_url }}" class="img-fluid rounded-start card-listing-img" alt="...">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body h-100 d-flex flex-column">
+                            <h5 class="card-title">{{ listing.title }}</h5>
+                            <p class="card-text">{{ listing.description }}</p>
+                            <p class="card-text fw-bold">
+                                <small class="text-muted">Current price: ${{ listing.get_current_price }}</small>
+                            </p>
+                            <a href="{% url 'listing' listing_id=listing.id %}" class="btn btn-primary mt-auto"
+                                style="width: 6rem;">
+                                View
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="col-md-12 col-lg-6 d-flex justify-content-center">
+            <div class="card w-100 text-bg-secondary">
+                <div class="row g-0 h-100">
+                    <div class="col-md-4 align-self-center d-flex justify-content-center">
+                        <img src="{{ listing.image_url }}" class="img-fluid rounded-start card-listing-img" alt="...">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body h-100 d-flex flex-column">
+                            <span class="fw-bold">AUCTION CLOSED</span>
+                            <h5 class="card-title">{{ listing.title }}</h5>
+                            <p class="card-text">{{ listing.description }}</p>
+                            <p class="card-text fw-bold">
+                                <small>Current price: ${{ listing.get_current_price }}</small>
+                            </p>
+                            <a href="{% url 'listing' listing_id=listing.id %}" class="btn btn-primary mt-auto"
+                                style="width: 6rem;">
+                                View
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    {% empty %}
+    <p>{{ no_listings_message }}</p>
+    {% endfor %}
+</div>

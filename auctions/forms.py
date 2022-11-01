@@ -7,23 +7,21 @@ class ListingForm(forms.ModelForm):
     class Meta:
         model = Listing
         fields = ["title", "description", "starting_bid",
-                  "image_url", "category", "listed_by"]
+                  "image_url", "category"]
         widgets = {
             "title": forms.TextInput(attrs={"class": "form-control mb-3"}),
             "description": forms.Textarea(attrs={"class": "form-control mb-3"}),
             "starting_bid": forms.NumberInput(attrs={"class": "form-control mb-3"}),
             "image_url": forms.TextInput(attrs={"class": "form-control mb-3"}),
             "category": forms.Select(attrs={"class": "form-control mb-3"}),
-            "listed_by": forms.HiddenInput()
         }
 
 
 class BidForm(forms.ModelForm):
     class Meta:
         model = Bid
-        fields = ["bidder", "listing", "price"]
+        fields = ["listing", "price"]
         widgets = {
-            "bidder": forms.HiddenInput(),
             "listing": forms.HiddenInput(),
             "price": forms.NumberInput(attrs={"class": "form-control form-control-sm", "placeholder": "Bid"})
         }
@@ -41,14 +39,14 @@ class BidForm(forms.ModelForm):
                 self.add_error("price", "Bid must be greater than any other bids.")
         elif price < listing.starting_bid:
                 self.add_error("price", "Bid must be at least equal to the starting bid.")
+        
 
 
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
-        fields = ["author", "listing", "text"]
+        fields = ["listing", "text"]
         widgets = {
-            "author": forms.HiddenInput(),
             "listing": forms.HiddenInput(),
             "text": forms.Textarea(attrs={
                 "class": "form-control mb-2", 

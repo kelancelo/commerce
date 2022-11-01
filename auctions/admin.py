@@ -1,16 +1,11 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
 from .models import *
 
-class UserAdmin(admin.ModelAdmin):
-    list_display = ("id", "username")
-
-
-class ListingAdmin(admin.ModelAdmin):
-    list_display = ("id", "title", "date_created")
 
 # Register your models here.
 admin.site.register(User, UserAdmin)
 admin.site.register(Category)
-admin.site.register(Listing, ListingAdmin)
+admin.site.register(Listing)
 admin.site.register(Comment)
 admin.site.register(Bid)

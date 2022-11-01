@@ -1,8 +1,8 @@
 {% extends "auctions/layout.html" %}
 
-{% block title %}All Listings{% endblock %}
+{% block title %}Active Listings{% endblock %}
 
 {% block body %}
-    <h1 class="mb-3 fs-2">All Listings</h1>
+    <h1 class="mb-3 fs-2">Active Listings</h1>
     {% include "auctions/listings_template.html" with no_listings_message="No listings yet." %}
 {% endblock %}

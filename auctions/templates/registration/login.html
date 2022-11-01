@@ -1,0 +1,32 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block script %}
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelector("#id_username").classList.add("form-control", "mb-2");
+            document.querySelector("#id_password").classList.add("form-control", "mb-2");
+        })
+    </script>
+{% endblock %}
+
+{% block body %}
+<div class="container" style="max-width: 512px;">
+    <h1 class="mb-3">Login</h1>
+
+    {% if message %}
+    <div>{{ message }}</div>
+    {% endif %}
+
+    <form action="{% url 'login' %}" method="post" class="mb-3">
+        {% csrf_token %}
+        {{ form }}
+        <input type="hidden" name="next" value="{{ next }}">
+        <input class="btn btn-primary" type="submit" value="Login">
+    </form>
+
+    <p>Don't have an account? <a href="{% url 'register' %}">Register here.</a></p>
+    <p>Forgot your password? <a href="{% url 'password_reset' %}">Reset it.</a></p>
+</div>
+{% endblock %}

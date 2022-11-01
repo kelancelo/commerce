@@ -1,32 +1,7 @@
 {% extends "auctions/layout.html" %}
 
+{% block title %}Watchlist{% endblock %}
 {% block body %}
-<main class="container">
     <h1 class="mb-3 fs-2">Watchlist</h1>
-    <div class="row">
-        {% for listing in watchlist %}
-        <div class="col-md-12 col-lg-6 d-flex justify-content-center">
-            <div class="card w-100">
-                <div class="row g-0 h-100">
-                    <div class="col-md-4 align-self-center d-flex justify-content-center">
-                        <img src="{{ listing.image_url }}" class="img-fluid rounded-start card-listing-img" alt="...">
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ listing.title }}</h5>
-                            <p class="card-text">{{ listing.description }}</p>
-                            <p class="card-text fw-bold">
-                                <small class="text-muted">Current price: ${{ listing.current_price }}</small>
-                            </p>
-                            <a href="{% url 'listing' listing_id=listing.id %}" class="btn btn-primary">View</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {% empty %}
-        <p>Your watchlist is empty.</p>
-        {% endfor %}
-    </div>
-</main>
+    {% include "auctions/listings_template.html" with listings=watchlist no_listings_message="You have no watchlist." %}
 {% endblock %}

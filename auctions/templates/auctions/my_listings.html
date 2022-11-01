@@ -1,0 +1,8 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}My Listings{% endblock %}
+
+{% block body %}
+    <h1 class="fs-2 mb-3">My Listings</h1>
+    {% include "auctions/listings_template.html" with listings=listings no_listings_message="You don't have any listings" %}
+{% endblock %}

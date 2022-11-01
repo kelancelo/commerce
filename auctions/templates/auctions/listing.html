@@ -5,16 +5,19 @@
 {% endblock %}
 
 {% block body %}
-<main class="container">
 <div class="row g-4">
     <div class="col-12 col-lg-6 align-self-center d-flex justify-content-center">
         <img class="listing-img" src="{{ listing.image_url }}" alt="...">
     </div>
     <div class="col-12 col-lg-6">
         <h1 class="mb-4">{{ listing.title }}</h1>
+        {% if listing.status == "active" %}
         <p class="fw-bold fs-2">${{ current_price}}</p>
+        {% else %}
+        <p class="fw-bold fs-2">Sold for ${{ current_price}}</p>
+        {% endif %}
 
-        {% if user.is_authenticated and listing.status == "active" %}
+        {% if user.is_authenticated %}
         <small class="mb-1">
             {{ bid_count }} bid(s) so far.
             {% if user_has_highest_bid %}
@@ -42,12 +45,13 @@
             {% endif %}
         </div>
 
-        {% if user.is_authenticated and listing.status == "active" %}
+        {% if user.is_authenticated %}
         <div class="d-flex">
             {% if in_watchlist %}
-            <a class="btn btn-danger" href="{% url 'delete_watchlist_item' listing.id %}">
-                Remove from Watchlist
-            </a>
+            <form action="{% url 'delete_watchlist_item' listing.id %}" method="post">
+                {% csrf_token %}
+                <input type="submit" value="Remove from Watchlist" class="btn btn-danger">
+            </form>
             {% else %}
             <form action="{% url 'watchlist' %}" method="post">
                 {% csrf_token %}
@@ -56,9 +60,10 @@
             </form>
             {% endif %}
             {% if user_created_the_listing %}
-            <a class="btn btn-danger ms-2" href="{% url 'close_auction' listing.id %}">
-                Close auction
-            </a>
+            <form action="{% url 'close_auction' listing.id %}" method="post">
+                {% csrf_token %}
+                <input type="submit" value="Close auction" class="btn btn-danger ms-2">
+            </form>
             {% endif %}
         </div>
         {% endif %}
@@ -66,13 +71,8 @@
 </div>
 <div class="mt-5">
     <h2 class="fs-4">Comments</h2>
-    <form action="{% url 'comment' %}" method="post" class="mb-3">
-        {% csrf_token %}
-        {{ comment_form }}
-        <input type="submit" value="Comment" class="btn btn-primary btn-sm">
-    </form>
-    <div class="row gy-2">
-        {% for comment in comments %}
+    <div class="row gy-2 mb-3">
+        {% for comment in comment_page %}
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
@@ -82,8 +82,39 @@
                 </div>
             </div>
         </div>
+        {% empty %}
+        <div>No comments.</div>
         {% endfor %}
     </div>
+
+    <form action="{% url 'comment' %}" method="post" class="mb-3">
+        {% csrf_token %}
+        {{ comment_form }}
+        <input type="submit" value="Comment" class="btn btn-primary btn-sm">
+    </form>
+
+    {% if comment_page.paginator.num_pages > 1 %}
+    <nav>
+        <ul class="pagination mt-3 justify-content-center">
+            {% if comment_page.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page=1">First</a></li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ comment_page.previous_page_number }}">Previous</a>
+            </li>
+            {% endif %}
+            <small class="mx-2 align-self-center">
+                Page {{ comment_page.number }} of {{ comment_page.paginator.num_pages }}
+            </small>
+            {% if comment_page.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ comment_page.next_page_number }}">Next</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ comment_page.paginator.num_pages }}">Last</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
 </div>
-</main>
 {% endblock %}
