@@ -167,3 +167,7 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = "delosreyesmiguelangelo"
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
+
+from django.utils.log import DEFAULT_LOGGING as LOGGING
+
+LOGGING['handlers']['mail_admins']['include_html'] = True
