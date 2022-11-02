@@ -25,7 +25,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get("SECRET_KEY", "fuck")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = "DEBUG" not in os.environ
+# DEBUG = "DEBUG" not in os.environ
+DEBUG = True
 
 ALLOWED_HOSTS = [".railway.app", "127.0.0.1"]
 
