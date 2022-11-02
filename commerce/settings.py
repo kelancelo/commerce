@@ -25,7 +25,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get("SECRET_KEY", "fuck")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = "DEBUG" not in os.environ
+# DEBUG = "DEBUG" not in os.environ
+DEBUG = True
 
 ALLOWED_HOSTS = [".railway.app", "127.0.0.1"]
 
@@ -167,7 +168,3 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = "delosreyesmiguelangelo"
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
-
-from django.utils.log import DEFAULT_LOGGING as LOGGING
-
-LOGGING['handlers']['mail_admins']['include_html'] = True
